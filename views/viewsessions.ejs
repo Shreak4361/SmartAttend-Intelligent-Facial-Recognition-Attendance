@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>My Sessions</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f1f5f9;
+      margin: 0;
+      padding: 30px;
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 25px;
+      color: #1e293b;
+    }
+
+    .session-card {
+      background: white;
+      padding: 20px;
+      border-radius: 12px;
+      margin-bottom: 20px;
+      box-shadow: 0 6px 16px rgba(0,0,0,0.08);
+    }
+
+    .session-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .session-header h3 {
+      margin: 0;
+      color: #2563eb;
+    }
+
+    .meta {
+      font-size: 14px;
+      color: #475569;
+      margin-top: 6px;
+    }
+
+    .actions {
+      margin-top: 15px;
+      display: flex;
+      gap: 15px;
+      align-items: center;
+    }
+
+    .like-btn {
+      background: #e0e7ff;
+      border: none;
+      padding: 8px 14px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 14px;
+    }
+
+    .like-btn:hover {
+      background: #c7d2fe;
+    }
+
+    textarea {
+      width: 100%;
+      margin-top: 10px;
+      padding: 10px;
+      border-radius: 6px;
+      border: 1px solid #cbd5e1;
+      resize: none;
+      font-size: 14px;
+    }
+
+    .submit-btn {
+      margin-top: 8px;
+      padding: 8px 16px;
+      background: #2563eb;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 14px;
+    }
+
+    .submit-btn:hover {
+      background: #1e40af;
+    }
+  </style>
+</head>
+<body>
+
+<h2>My Attended Sessions</h2>
+
+<% if (sessions.length=== 0) { %>
+  <p style="text-align:center;">No sessions attended yet.</p>
+<% } %>
+
+<% sessions.forEach(session => { %>
+  <div class="session-card">
+    
+    <div class="session-header">
+      <h3><%= session.topic %></h3>
+      <span><%= new Date(session.date).toDateString() %></span>
+    </div>
+
+    <div class="meta">
+      Conducted By: <strong><%= session.conductedBy %></strong>
+    </div>
+
+    <div class="actions">
+      <button class="like-btn" onclick="likeSession('<%= session._id %>')">
+        👍 Like (<span id="likes-<%= session._id %>"><%= session.likes %></span>)
+      </button>
+    </div>
+
+    <form onsubmit="submitReview(event, '<%= session._id %>')">
+      <textarea rows="3" placeholder="Write your review..." required></textarea>
+      <button type="submit" class="submit-btn">Submit Review</button>
+    </form>
+
+  </div>
+<% }) %>
+
+<script>
+  async function likeSession(sessionId) {
+    const res = await fetch(`/${sessionId}/like`, {
+      method: 'POST'
+    });
+
+    const data = await res.json();
+    if (res.ok) {
+      document.getElementById(`likes-${sessionId}`).innerText = data.likes;
+    }
+  }
+
+  async function submitReview(e, sessionId) {
+    e.preventDefault();
+    const review = e.target.querySelector('textarea').value;
+
+    const res = await fetch(`/${sessionId}/review`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ review })
+    });
+
+    if (res.ok) {
+      e.target.reset();
+      alert('Review submitted!');
+    }
+  }
+</script>
+
+</body>
+</html>
