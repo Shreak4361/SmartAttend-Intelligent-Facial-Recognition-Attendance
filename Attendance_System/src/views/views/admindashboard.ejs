@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Admin Dashboard</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f1f5f9;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .container {
+      background: white;
+      padding: 30px;
+      width: 420px;
+      border-radius: 12px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 25px;
+      color: #1e293b;
+    }
+
+    label {
+      display: block;
+      margin-top: 12px;
+      font-weight: bold;
+      color: #334155;
+    }
+
+    input {
+      width: 100%;
+      padding: 10px;
+      margin-top: 6px;
+      border-radius: 6px;
+      border: 1px solid #cbd5e1;
+      font-size: 14px;
+    }
+
+    button {
+      margin-top: 18px;
+      width: 100%;
+      padding: 12px;
+      font-size: 16px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    .primary-btn {
+      background: #2563eb;
+      color: white;
+    }
+
+    .primary-btn:hover {
+      background: #1e40af;
+    }
+
+    .admin-btn {
+      background: #f59e0b;
+      color: #1f2937;
+    }
+
+    .admin-btn:hover {
+      background: #d97706;
+    }
+
+    .status {
+      margin-top: 15px;
+      text-align: center;
+      font-size: 14px;
+      color: #16a34a;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Admin Dashboard</h2>
+
+    <!-- Create Session Form -->
+<form 
+  id="sessionForm"
+  method="POST"
+  action="/sessiondetailsupload"
+  enctype="multipart/form-data"
+>
+  <label>Date</label>
+  <input type="date" name="date" required />
+
+  <label>Conducted By</label>
+  <input
+    type="text"
+    name="conductedBy"
+    placeholder="Faculty / Admin Name"
+    required
+  />
+
+  <label>Topic</label>
+  <input
+    type="text"
+    name="topic"
+    placeholder="Session Topic"
+    required
+  />
+
+  <label>Upload Group Photo</label>
+  <input
+    type="file"
+    name="groupPhoto"
+    accept="image/*"
+    required
+  />
+
+  <button type="submit" class="primary-btn">
+    Create Session & Detect Attendance
+  </button>
+</form>
+</div>
+</body>
+
+    <!-- Grant Admin Button -->
+ <button class="admin-btn" onclick="openGrantModal()">
+  Grant Admin Status
+</button>
+
+ <div id="grantModal" class="modal">
+  <div class="modal-content">
+    <h3>Grant Admin Access</h3>
+
+    <input type="email" id="userEmail" placeholder="User Email" required />
+    <input type="password" id="adminPassword" placeholder="Your Admin Password" required />
+
+    <div class="modal-actions">
+      <button onclick="grantAdmin()">Confirm</button>
+      <button class="cancel" onclick="closeGrantModal()">Cancel</button>
+    </div>
+
+    <p id="grantStatus"></p>
+  </div>
+ </div>
+ <style>
+.modal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.5);
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-content {
+  background: white;
+  padding: 25px;
+  width: 320px;
+  border-radius: 10px;
+  text-align: center;
+}
+
+.modal-content input {
+  width: 100%;
+  padding: 10px;
+  margin-top: 10px;
+}
+
+.modal-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 15px;
+}
+
+.modal-actions button {
+  flex: 1;
+  padding: 10px;
+}
+
+.cancel {
+  background: #64748b;
+  color: white;
+}
+</style>
+<script>
+function openGrantModal() {
+  document.getElementById('grantModal').style.display = 'flex';
+}
+
+function closeGrantModal() {
+  document.getElementById('grantModal').style.display = 'none';
+}
+
+async function grantAdmin() {
+  const email = document.getElementById('userEmail').value;
+  const password = document.getElementById('adminPassword').value;
+  const status = document.getElementById('grantStatus');
+
+  status.innerText = "Processing...";
+
+  const res = await fetch('/admin/grant', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ email, password })
+  });
+
+  const data = await res.json();
+
+  if (res.ok) {
+    status.style.color = "green";
+    status.innerText = "Admin access granted successfully!";
+  } else {
+    status.style.color = "red";
+    status.innerText = data.message;
+  }
+}
+</script>
+
+
+    <div class="status" id="status"></div>
+  </div>
+
+
+
+
+</body>
+</html>
