@@ -24,33 +24,6 @@ Role-based admin controls
 Cloud-based image storage
 
 
-Architecture Diagram (Text/ASCII version)
-                 +-----------------+
-                 |   Browser / UI  |
-                 |  (EJS Templates)|
-                 +--------+--------+
-                          |
-                          v
-                 +-----------------+
-                 | Node.js + Express|
-                 |   Backend API   |
-                 +--------+--------+
-                          |
-            +-------------+----------------+
-            |                              |
-            v                              v
-+---------------------+        +----------------------+
-| Cloudinary Storage  |        |  FastAPI AI Service  |
-|  (User & Session    |<------>| Face Recognition     |
-|     Images)         |        | Encodings & Attendance|
-+---------------------+        +----------------------+
-            |
-            v
-     +-----------------+
-     |   MongoDB       |
-     |  Users & Attendance |
-     +-----------------+
-
 
 ✨ Key Features
 👤 User Features
@@ -165,7 +138,7 @@ CLOUDINARY_API_SECRET=xxxx
 
 ⚙️ Installation & Setup
 1️⃣ Clone the Repository
-git clone https://github.com/your-username/attendance-system.git
+git clone https://github.com/Shreak4361/SmartAttend-Intelligent-Facial-Recognition-Attendance
 cd attendance-system
 
 2️⃣ Install Node.js Dependencies
