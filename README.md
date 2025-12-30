@@ -1,263 +1,121 @@
-# SmartAttend-Intelligent-Facial-Recognition-Attendance
-📸 AI-Powered Attendance Management System
+# SmartAttend – Intelligent Facial Recognition Attendance System
 
-An end-to-end smart attendance system that automates attendance marking using face recognition from group photos.
-The system integrates a Node.js + Express backend with a FastAPI-based AI microservice for face detection, recognition, and attendance updates.
+[![Python](https://img.shields.io/badge/Python-3.11-blue)](https://www.python.org/)
+[![Node.js](https://img.shields.io/badge/Node.js-18.x-green)](https://nodejs.org/)
+[![MongoDB](https://img.shields.io/badge/MongoDB-5.0-brightgreen)](https://www.mongodb.com/)
+[![License](https://img.shields.io/badge/License-MIT-yellow)](LICENSE)
 
-🚀 Project Overview
+---
 
-Traditional attendance systems are manual, time-consuming, and error-prone.
-This project solves that by enabling:
+## 📝 Project Overview
 
-User registration & authentication
+**SmartAttend** is a real-world attendance management system that leverages **facial recognition** to automate attendance tracking. It integrates **Node.js** backend, **MongoDB** database, **Cloudinary** for image storage, and a **FastAPI AI microservice** for face encoding and recognition.
 
-Uploading multiple user images for face encoding
+**Key Features:**
 
-Uploading session group photos
+- User registration and login with **JWT authentication**
+- Admin and user role-based access control
+- Upload multiple user photos for encoding
+- Automatic face recognition from group session photos
+- Attendance percentage calculation
+- Secure password hashing with **bcrypt**
+- Cloud storage for all images (Cloudinary)
+- Real-time face matching using **face_recognition** and **OpenCV**
+- Dashboard for users and admins
 
-Automatic face recognition
+---
 
-Attendance marking linked to sessions
+## 🏛 Architecture
 
-Role-based admin controls
+```mermaid
+graph TD
+    A[Browser / UI] --> B[Node.js + Express Backend]
+    B --> C[MongoDB Database]
+    B --> D[Cloudinary Storage]
+    B --> E[FastAPI AI Service]
+```
 
-Cloud-based image storage
+## Tech Stack
+- **Backend:** Node.js, Express
+- **Frontend:** EJS, HTML, CSS
+- **Database:** MongoDB
+- **AI / ML:** FastAPI, face_recognition, OpenCV
+- **Cloud Storage:** Cloudinary
+- **Authentication:** JWT, bcrypt
+
+## Installation
+1. Clone the repo:
+   ```bash
+   git clone https://github.com/yourusername/attendance-sys.git
+   cd attendance-sys
+2. Install dependencies:
+   ``` bash
+     npm install
+     pip install -r requirements.txt
+
+
+ 3.Create .env file:
+  ``` bash
+    MONGO_URI=mongodb://localhost:27017/attendanceSys
+    JWT_SECRET=your_jwt_secret
+    CLOUDINARY_CLOUD_NAME=...
+    CLOUDINARY_API_KEY=...
+    CLOUDINARY_API_SECRET=...
+```
+ 4. Run the servers:
+``` bash
+node server.js
+uvicorn ai_service:app --reload
 
 
 
-✨ Key Features
-👤 User Features
+```
 
-Secure user registration & login (JWT + cookies)
-
-Upload multiple personal photos for better face recognition
-
-View attendance percentage
-
-View attended session details
-
-Like and review sessions
-
-🛠️ Admin Features
-
-Admin-only login & dashboard
-
-Upload session details with group photo
-
-Automatic attendance marking via AI
-
-Grant admin access to users (with password verification)
-
-🤖 AI / ML Features
-
-Face detection & encoding using face-recognition
-
-Average face encoding per user for robustness
-
-Attendance marking from group photos
-
-Duplicate prevention via encoding tracking
-
-🧱 Architecture
-Browser (EJS)
-     |
-Node.js + Express (Backend)
-     |
-Axios (HTTP calls)
-     |
-FastAPI Face Recognition Service
-     |
-MongoDB (Users + Attendance)
-     |
-Cloudinary (Image Storage)
-
-🛠️ Tech Stack
-Backend
-
-Node.js
-
-Express.js
-
-MongoDB + Mongoose
-
-JWT Authentication
-
-bcrypt
-
-Axios
-
-EJS (Server-Side Rendering)
-
-AI / ML Service
-
-FastAPI
-
-face-recognition
-
-OpenCV
-
-NumPy
-
-MongoDB (PyMongo)
-
-Cloud & Storage
-
-Cloudinary
-
-Multer
-
-📁 Project Structure
+## Project Structure
+```
 attendance_Sys/
 │
 ├── src/
-│   ├── config/          # DB & Cloudinary config
-│   ├── models/          # Mongoose schemas
-│   ├── middlewares/     # Auth & upload middleware
-│   ├── services/        # Face recognition service calls
-│   ├── views/           # EJS templates
-│   └── app.js           # Express app (routes + logic)
+│   ├── config/
+│   ├── models/
+│   ├── middlewares/
+│   ├── services/
+│   ├── views/
+│   └── app.js
 │
-├── public/              # Static assets
-├── server.js            # Server entry point
-├── face_service.py      # FastAPI ML microservice
-├── requirements.txt     # Python dependencies
-├── .env                 # Environment variables
-└── README.md
+├── public/
+├── server.js
+├── face_service.py
+├── requirements.txt
+├── .env
+```
 
-🔐 Environment Variables
+## 📷 Image Flow
+## User Image Upload
 
-Create a .env file:
-
-PORT=3000
-MONGO_URI=mongodb://localhost:27017/attendanceSys
-JWT_SECRET=your_jwt_secret
-
-CLOUDINARY_CLOUD_NAME=xxxx
-CLOUDINARY_API_KEY=xxxx
-CLOUDINARY_API_SECRET=xxxx
-
-⚙️ Installation & Setup
-1️⃣ Clone the Repository
-git clone https://github.com/Shreak4361/SmartAttend-Intelligent-Facial-Recognition-Attendance
-cd attendance-system
-
-2️⃣ Install Node.js Dependencies
-npm install
-
-3️⃣ Install Python Dependencies
-pip install -r requirements.txt
+- User uploads multiple photos
+- Stored in Cloudinary
+- URLs saved in MongoDB
+- AI service extracts face encodings
+- Average encoding stored per user
+## Session Group Photo Upload
+- Admin uploads group photo
+- Stored in Cloudinary
+- FastAPI detects faces
+- Matches with stored encodings
+- Attendance updated automatically
 
 
-⚠️ Important (Windows Users)
-face-recognition requires dlib.
-Install Visual Studio Build Tools if it fails.
+## 🔒 Security Practices
 
-4️⃣ Run MongoDB
-mongod
+- Password hashing using bcrypt
+- JWT stored in HTTP-only cookies
+- Role-based access control (User / Admin)
+- Protected routes via middleware
+- Admin privilege verification before role changes
 
-5️⃣ Start FastAPI Face Recognition Service
-uvicorn face_service:app --reload --port 8000
-
-6️⃣ Start Node.js Server
-node server.js
-
-
-Visit:
-
-http://localhost:3000
-
-📷 Image Flow
-User Image Upload
-
-User uploads multiple photos
-
-Stored in Cloudinary
-
-URLs saved in MongoDB
-
-AI service extracts face encodings
-
-Average encoding stored per user
-
-Session Group Photo Upload
-
-Admin uploads group photo
-
-Stored in Cloudinary
-
-FastAPI detects faces
-
-Matches with stored encodings
-
-Attendance updated automatically
-
-🧠 Attendance Logic
-
-Each user has:
-
-present_dates
-
-sessions_attended
-
-days_present
-
-Attendance is updated only when a face match is found
-
-Uses distance-based face matching with tolerance
-
-📊 Screens & Pages
-
-Home Page
-
-User Login / Register
-
-User Dashboard (attendance %)
-
-Session Details Page
-
-Admin Dashboard
-
-Session Upload Page
-
-📸 Screenshots can be added here
-
-/screenshots/
-  ├── login.png
-  ├── dashboard.png
-  ├── admin.png
-
-🔒 Security Practices
-
-Password hashing using bcrypt
-
-JWT stored in HTTP-only cookies
-
-Role-based access control (User / Admin)
-
-Protected routes via middleware
-
-Admin privilege verification before role changes
-
-📌 Future Enhancements
-
-Live camera attendance
-
-Face spoofing detection
-
-Attendance analytics dashboard
-
-Dockerized deployment
-
-AWS / GCP hosting
-
-Notification system
-
-👨‍💻 Author
+## 👨‍💻 Author
 
 Shreyansh Srivastava
 AI | Backend 
-Built as a real-world, production-oriented project.
-
-
-
 
